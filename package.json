@@ -1,0 +1,38 @@
+{
+  "name": "biblotechpi",
+  "version": "1.0.0",
+  "description": "tiny webserver for small library. Users can rent books with SmarthPhone's QRCode Reader",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "dotenv": "^4.0.0",
+    "escape-html": "^1.0.3",
+    "express": "^4.14.0",
+    "express-redis-cache": "^0.5.0",
+    "mysql": "^2.11.1",
+    "nodeadmin": "^0.1.2",
+    "regex": "^0.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"setup" :"setup/setup.sh",
+	"start" : "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sungdooyoo/BibloTechPi.git"
+  },
+  "keywords": [
+    "library",
+    "raspberrypi",
+    "qrcode",
+    "rent"
+  ],
+  "author": "dev.esung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sungdooyoo/BibloTechPi/issues"
+  },
+  "homepage": "https://github.com/Sungdooyoo/BibloTechPi#readme"
+}
