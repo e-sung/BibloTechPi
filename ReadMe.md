@@ -1,10 +1,15 @@
-# What you can do with this
-
-* Introductory Video : [https://youtu.be/kazQGE6X-ss](https://youtu.be/kazQGE6X-ss) 
+# What is it?
+* This is server part of BibloTechPi Project.
+* Cilent Parts
+  * [Android](https://github.com/e-sung/BibloTechAndroid)
+  * iOS : Coming Soon
+  * PWA : Coming Soon
+  
+# What is BibloTechPi Project?
 * Rent and return book with QR code
 * Search Books with its title / author / publisher
 * Write and read book review 
-* To manage database of this webapp, you can use gui interface with http://localhost:3030/nodeadmin 
+* Introductory Video : [https://youtu.be/kazQGE6X-ss](https://youtu.be/kazQGE6X-ss) 
 
 # Installation 
 
@@ -35,17 +40,17 @@ For other OS users, check out [https://nodejs.org/ko/download/package-manager/](
 sudo apt-get install mysql-server 
 ```
 
-During the installation, you will configure root password for the database. Remember the password.
+During the installation, you will configure root password for the database. **Remember the password.**
 
 ## 4. Clone this Repository in your home directory
 ```
 cd ~
-git clone https://github.com/Sungdooyoo/BibloTechPi.git 
+git clone https://github.com/e-sung/BibloTechPi-Server.git BibloTechPi-Server
 ```
 
 ## 5. Install Dependencies
 ```
-cd BibloTechPi
+cd BibloTechPi-Server
 npm install
 ```
 
