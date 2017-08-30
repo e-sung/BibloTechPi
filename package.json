@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sungdooyoo/BibloTechPi.git"
+    "url": "git+https://github.com/Sungdooyoo/BibloTechPi-Server.git"
   },
   "keywords": [
     "library",
