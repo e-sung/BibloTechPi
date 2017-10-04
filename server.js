@@ -47,7 +47,7 @@ app.post('/signup',(req,res)=>{
 			console.log("New user registered!");
 			res.send(validity);
 		}
-		else{
+		else{ 
 			console.log(validity);
 			res.json(validity);
 		}
