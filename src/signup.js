@@ -6,7 +6,7 @@ var User = require('./User.js');
 
 module.exports={
 
-	getUserInputs : function (req) {
+	parseUserInputsOutOf : function (req) {
 		var userInputs = {};
 		userInputs.userName = escape(req.body.userName);
 		userInputs.phoneNumber = escape(req.body.phoneNumber);
@@ -17,7 +17,7 @@ module.exports={
 		return userInputs;
 	},
 
-	getUserInputsValidity : function (userInputs) {
+	validateParsed : function (userInputs) {
 		var validity= {};
 		validity.userNameValidity = checkUserName(userInputs.userName);
 		validity.phoneNumberValidity = checkPhoneNumber(userInputs.phoneNumber);
@@ -28,11 +28,19 @@ module.exports={
 		return validity;
 	},
 
-	getSameUserExistence : function(email,checkSameUserExists){
+	checkSameUserExistence : function(email,getQueryResultMessageWith){
 		var user_exists = false;
 		var sql = mysql.format("select * from user where email =?", email);
 		connection.query(sql, function(err,rows,fields){
-			passUserExistence(err,rows,fields,checkSameUserExists);
+			if(err) throw err;
+			if(rows.length>0){
+				stringToShow = "User with same email address  exists";
+			}
+			else{
+				stringToShow = "";
+			}
+			getQueryResultMessageWith(stringToShow);
+			return stringToShow;
 		});
 	},
 
@@ -109,15 +117,14 @@ function checkPasswordConfirm(password,passwordConfirm){
 	}
 }
 
-function passUserExistence(err, rows, fields,checkSameUserExists){
+function passUserExistence(err, rows, fields,showQueryResultWith){
 	if(err) throw err;
 	if(rows.length>0){
-		return_value = "User with same email address  exists";
-		checkSameUserExists(return_value);
-		return return_value;
+		stringToShow = "User with same email address  exists";
 	}
 	else{
-		checkSameUserExists("");
-		return "";
+		stringToShow = "";
 	}
+	showQueryResultWith(stringToShow);
+	return stringToShow;
 }

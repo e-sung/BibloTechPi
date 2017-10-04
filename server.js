@@ -31,14 +31,14 @@ app.get('/test-connection',(req,res)=>{
 });
 
 app.post('/signup',(req,res)=>{ 
-	var userInputs = signup.getUserInputs(req); //First parse userInputs from request
-	var validity = signup.getUserInputsValidity(userInputs);//Then validate userInputs
+	var userInputs = signup.parseUserInputsOutOf(req); //First parse userInputs from request
+	var validity = signup.validateParsed(userInputs);//Then validate userInputs
 	var userPassword = userInputs.password;
 	delete userInputs.password; //After validating, get rid of password information from userInputs object. This object can be sent to client;
 
-	signup.getSameUserExistence(userInputs.email , function checkSameUserExists(existValidity) { //Finally check if user with same 'email' exists
-		if(existValidity){                  													   //Why validate this seperately? Because this is the only validation that requires db access. 
-			validity.emailValidity = existValidity;			
+	signup.checkSameUserExistence(userInputs.email , function getQueryResultMessageWith(errorMessage) { //Finally check if user with same 'email' exists
+		if(errorMessage){                  													   //Why validate this seperately? Because this is the only validation that requires db access. 
+			validity.emailValidity = errorMessage;			
 			console.log(validity);
 			res.json(validity);
 		}
