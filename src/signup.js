@@ -2,7 +2,6 @@ var escape = require('escape-html');
 var connection = require('./db.js');
 var mysql = require('mysql');
 var crypto = require("crypto");
-var User = require('./User.js');
 
 module.exports={
 
