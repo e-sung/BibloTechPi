@@ -2,6 +2,7 @@ var escape = require('escape-html');
 var connection = require('./db.js');
 var mysql = require('mysql');
 var crypto = require("crypto");
+var User = require('./User.js');
 
 module.exports={
 
@@ -56,6 +57,7 @@ module.exports={
 		});
 	},
 };
+
 
 function checkUserName(userName) {
 	var re = new RegExp("[a-zA-Z0-9_-]{3,20}");
