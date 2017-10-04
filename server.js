@@ -42,7 +42,7 @@ app.post('/signup',(req,res)=>{
 			console.log(validity);
 			res.json(validity);
 		}
-		else if(signup.isAllValid(validity)){ //if everything is allright
+		else if(signup.checkPurityOf(validity)){ //if everything is allright
 			signup.insertDB(userInputs,userPassword);//insert provided information into database
 			console.log("New user registered!");
 			res.send(validity);

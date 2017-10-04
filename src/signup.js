@@ -43,15 +43,15 @@ module.exports={
 		});
 	},
 
-	isAllValid : function(validity) {
-		var valid = true ;
+	checkPurityOf : function(validity) {
+		var purity = true ;
 		for(var key in validity){
 			if(validity[key] !== "" || validity[key] === undefined){
-				valid = false;
+				purity = false;
 				break;
 			}
 		}
-		return valid;
+		return purity;
 	},
 	insertDB : function(userInputs,userPassword){
 		var salt = crypto.randomBytes(16).toString('hex');
