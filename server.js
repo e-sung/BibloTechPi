@@ -56,36 +56,29 @@ app.post('/signup',(req,res)=>{
 
 
 app.post('/login',(req,res)=>{
-	var userEmail = req.body.userEmail;
-	var password = req.body.password;
+	var clientEmail = req.body.userEmail;
+	var clientPassword = req.body.password;
 
-	var sql = mysql.format("select * from user where email = ?", userEmail);
-	connection.query(sql,function(err,rows,fields){
-		if(err){
-			res.send("DB query error");
+	var sql = mysql.format("select * from user where email = ?", clientEmail);
+	db.query(sql)
+	.then(function(queryResult){
+		var user = queryResult[0]
+		var hashedPasswordOfClient = crypto.createHmac('md5',user.salt).update(clientPassword).digest('hex');
+		IF(user.password === hashedPasswordOfClient){
+			var objectToSend = {
+				username : user.username,
+				email : user.email,
+				rentscore : user.rentscore,
+				rentableBooks : user.rentableBooks,
+				authToken : clientEmail + "|" + hashedPasswordOfClient
+			};
+			res.json(objectToSend);
+		}else{
+			res.status(400).send("Invalid Password");
 		}
-		else if(rows.length>0){
-			var originalHash = rows[0].password;
-			var salt = rows[0].salt;
-			var newHash = crypto.createHmac('md5',salt).update(password).digest('hex');
-			if(originalHash == newHash){//login success
-				var user = {
-					username : rows[0].username,
-					email : rows[0].email,
-					rentscore : rows[0].rentscore,
-					rentableBooks : rows[0].rentableBooks,
-					authToken : userEmail + "|" + newHash
-				};
-				res.json(user);
-			}
-			else{
-				res.status(400).send("Invalid Password");
-			}
-		}
-		else{
-			res.status(400).send("Invalid Email");
-		}
-	});
+	},function(error){
+		res.status(400).send("Invalid Email");
+	})
 });
 
 
