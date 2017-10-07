@@ -30,8 +30,8 @@ var postSearchAPI = require('./APIRouters/SearchAPIs/postSearchAPI.js')
 var writingAPI = require('./APIRouters/WritingAPIs/writePostAPI.js')
 
 //use routers
-app.use('/search-book',bookSearchAPI)
-app.use('/search-post-info',postSearchAPI)
+app.use('/search-results-of/book',bookSearchAPI)
+app.use('/search-results-of/post-info',postSearchAPI)
 
 app.get('/test-connection',(req,res)=>{
 	res.send("OK");
