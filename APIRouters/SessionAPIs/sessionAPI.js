@@ -2,15 +2,15 @@ var express = require('express')
 var router = express.Router()
 var crypto = require("crypto");
 var mysql = require('mysql');
+var escape = require('escape-html');
 var db = require('../../src/db.js');
 
-router.get('/info-of/:email',(req,res)=>{
+router.get('/info-with/:email',(req,res)=>{
 	var email = req.params.email;
 	console.log(email)
 	var sql = mysql.format("select * from user where email = ? ", email);
 	db.sendQueryResultWith(sql,res,true);
 });
-
 
 router.post('/sign-up',(req,res)=>{ 
 	var userInputs = signup.parseUserInputsOutOf(req); //First parse userInputs from request
@@ -46,8 +46,8 @@ router.post('/sign-up',(req,res)=>{
 });
 
 router.post('/sign-in',(req,res)=>{
-	var clientEmail = req.body.userEmail;
-	var clientPassword = req.body.password;
+	var clientEmail = escape(req.body.userEmail)
+	var clientPassword = escape(req.body.password);
 	var sql = mysql.format("select * from user where email = ?", clientEmail);
 	db.query(sql)
 	.then(function doLoginProcessWith(queryResult){
@@ -65,23 +65,3 @@ router.post('/sign-in',(req,res)=>{
 });
 
 module.exports = router
-	 function isAuthenticated(req){ 
-		return new Promise(function(resolve, reject){
-			var authToken = req.get("Authorization");
-			var userEmail = authToken.split("|")[0];                     
-			var userHash = authToken.split("|")[1];                     
-			var sql = mysql.format("select password from user where email = ?",userEmail);
-			db.query(sql).
-			then(function(result){
-				if(userHash==result[0].password){
-					resolve(true);
-				}else{
-					reject(false);
-				}
-			},function(err){
-				res.send(err);
-				console.log(err);
-			})
-		});
-	}
-

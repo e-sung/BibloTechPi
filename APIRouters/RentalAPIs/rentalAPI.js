@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var mysql = require('mysql');
 var db = require('../../src/db.js');
+var sessionHelper = require('../SessionAPIs/sessionHelper.js')
 
 router.get('/info-of/book/:id',(req,res)=>{
 	var bookId = req.query.id;
@@ -9,11 +10,21 @@ router.get('/info-of/book/:id',(req,res)=>{
 	db.sendQueryResultWith(sql,res,true);
 });
 
-router.patch('/status-of/book/:id',(req,res)=>{
+router.patch('/status-of/book/:id/to/:target-status',(req,res)=>{
+	if(req.params.target-status === "rent"){
+		rentTheBookWith(req,res)
+	}else if(req.params.target-status === "return"){
+		returnTheBookWith(req,res)
+	}
+})
+
+module.exports = router
+
+function rentTheBookWith(req, res){
 	var bookId  = req.body.id;
 	var userEmail = req.body.userEmail;
 
-	if(isAuthenticated(req)){
+	if(sessionHelper.checkAuthenticityOf(req)){
 		var sql = mysql.format("select is_rented from books where id  = ?", bookId);
 		db.query(sql).
 		then(function updateRentalStatusOf(books){
@@ -40,10 +51,9 @@ router.patch('/status-of/book/:id',(req,res)=>{
 		console.log("UnAuthorized access");
 		res.send("UnAuthorized access");
 	}
+}
 
-});
-
-router.post("/return",(req,res)=>{
+function returnTheBookWith(req,res){
 	var bookId = req.body.id;
 	var userName = req.body.userName; 
 	var bookTitle;
@@ -88,9 +98,5 @@ router.post("/return",(req,res)=>{
 	}).catch(function(error){
 		console.log(error)
 	})
-})
-
-
-
-module.exports = router
+}
 

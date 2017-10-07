@@ -54,16 +54,3 @@ module.exports={
 		}
 	}
 };
-
-function userExistsInQuery(err, rows, fields,callback){
-			if(err) throw err;
-			if(rows.length>0){
-				return_value = "User with same username exists";
-				callback(return_value);
-				return return_value;
-			}
-			else{
-				callback("");
-				return "";
-			}
-		}
