@@ -1,5 +1,5 @@
 var escape = require('escape-html');
-var connection = require('./db.js');
+var db = require('./db.js');
 var mysql = require('mysql');
 var crypto = require("crypto");
 
@@ -26,23 +26,6 @@ module.exports={
 
 		return validity;
 	},
-
-	checkSameUserExistence : function(email,getQueryResultMessageWith){
-		var user_exists = false;
-		var sql = mysql.format("select * from user where email =?", email);
-		connection.query(sql, function(err,rows,fields){
-			if(err) throw err;
-			if(rows.length>0){
-				stringToShow = "User with same email address  exists";
-			}
-			else{
-				stringToShow = "";
-			}
-			getQueryResultMessageWith(stringToShow);
-			return stringToShow;
-		});
-	},
-
 	checkPurityOf : function(validity) {
 		var purity = true ;
 		for(var key in validity){
@@ -58,10 +41,12 @@ module.exports={
 		var hash = crypto.createHmac('md5',salt).update(userPassword).digest('hex');
 		var sql = mysql.format("INSERT INTO user (username, phonenumber,email,password,salt,rentableBooks,readBooks) VALUES (?,?,?,?,?,5,';')", 
 			[userInputs.userName, userInputs.phoneNumber, userInputs.email,hash, salt]);			
-		connection.query(sql, function(err, rows, fields) {
-			if (err) throw err;
-			console.log(rows);
-		});
+		db.query(sql)
+		.then(function show(result){
+			console.log(result)
+		}, function show(error){
+			console.log(error)
+		})
 	},
 };
 

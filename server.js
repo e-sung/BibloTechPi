@@ -36,22 +36,22 @@ app.post('/signup',(req,res)=>{
 	var userPassword = userInputs.password;
 	delete userInputs.password; //After validating, get rid of password information from userInputs object. This object can be sent to client;
 
-	signup.checkSameUserExistence(userInputs.email , function getQueryResultMessageWith(errorMessage) { //Finally check if user with same 'email' exists
-		if(errorMessage){                  													   //Why validate this seperately? Because this is the only validation that requires db access. 
-			validity.emailValidity = errorMessage;			
-			console.log(validity);
-			res.json(validity);
+	var sql = mysql.format("select * from user where email =?", userInputs.email);
+	db.query(sql)
+	.then(function checkSameUserExists(result){
+		if(result.length>0){
+			validity.emailValidity = "User with Same email Address Exists!";			
+			console.log(validity)
+			res.json(validity)
+		}else if(signup.checkPurityOf(validity)){
+			signup.insertDB(userInputs,userPassword)
+			console.log("New user registered!")
+			res.send(validity)
+		}else{
+			console.log(validity)
+			res.json(validity)
 		}
-		else if(signup.checkPurityOf(validity)){ //if everything is allright
-			signup.insertDB(userInputs,userPassword);//insert provided information into database
-			console.log("New user registered!");
-			res.send(validity);
-		}
-		else{ 
-			console.log(validity);
-			res.json(validity);
-		}
-	});
+	})
 });
 
 
@@ -64,7 +64,7 @@ app.post('/login',(req,res)=>{
 	.then(function(queryResult){
 		var user = queryResult[0]
 		var hashedPasswordOfClient = crypto.createHmac('md5',user.salt).update(clientPassword).digest('hex');
-		IF(user.password === hashedPasswordOfClient){
+		if(user.password === hashedPasswordOfClient){
 			var objectToSend = {
 				username : user.username,
 				email : user.email,
