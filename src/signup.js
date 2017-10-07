@@ -53,6 +53,17 @@ module.exports={
 		})
 	},
 };
+var errorMessage = {
+	ofEmailDuplication : "User with Same Email Address already Exists",
+	ofEmailSyntax : "Invalid Email Syntax",
+	ofUserNameDuplication: "User with Same User Name already Exists",
+	ofUserNameRequirement: "More than 3 characters required",
+	ofPhoneNumberDuplication : "User with Same PhoneNumber already Exists",
+	ofPhoneNumberSyntax : "Invalid PhoneNumber Syntax",
+	ofPasswordRequireMent : "Password should be more than 3 characters",
+	ofPasswordConfirm : "Password doesn't Match!"
+}
+module.exports.errorMessage = errorMessage
 
 function checkUserName(userName) {
 	var re = new RegExp("[a-zA-Z0-9_-]{3,20}");
@@ -60,7 +71,7 @@ function checkUserName(userName) {
 		return "";
 	}
 	else{
-		return "More than 3 characters required";
+		return errorMessage.ofUserNameRequirement
 	}
 }
 
@@ -70,7 +81,7 @@ function checkPhoneNumber(phoneNumber) {
 		return "";	
 	}
 	else{
-		return "Unvalid Phone Number";
+		return errorMessage.ofPhoneNumberSyntax
 	}
 }
 
@@ -80,7 +91,7 @@ function checkEmail(email){
 		return "";
 	}
 	else{
-		return "Unvalid email address";
+		return errorMessage.ofEmailSyntax
 	}		
 }
 
@@ -90,7 +101,7 @@ function checkPassword(password) {
 		return "";
 	}
 	else{
-		return "More than 3 characters required";
+		return errorMessage.ofPasswordRequireMent
 	}
 }
 
@@ -100,18 +111,6 @@ function checkPasswordConfirm(password,passwordConfirm){
 		return "";
 	}
 	else{
-		return "Password doesn't match!";
+		return errorMessage.ofPasswordConfirm
 	}
-}
-
-function passUserExistence(err, rows, fields,showQueryResultWith){
-	if(err) throw err;
-	if(rows.length>0){
-		stringToShow = "User with same email address  exists";
-	}
-	else{
-		stringToShow = "";
-	}
-	showQueryResultWith(stringToShow);
-	return stringToShow;
 }
