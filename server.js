@@ -26,12 +26,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 //API routers
 var bookSearchAPI = require('./APIRouters/SearchAPIs/bookSearchAPI.js')
-var postSearchAPI = require('./APIRouters/SearchAPIs/postSearchAPI.js')
-var writingAPI = require('./APIRouters/WritingAPIs/writePostAPI.js')
+//var postSearchAPI = require('./APIRouters/SearchAPIs/postSearchAPI.js')
 
 //use routers
-app.use('/search-results-of/book',bookSearchAPI)
-app.use('/search-results-of/post-info',postSearchAPI)
+app.use('/search-result-of/books/filtered-by',bookSearchAPI)
+//app.use('/search-results-of/post-info',postSearchAPI)
 
 app.get('/test-connection',(req,res)=>{
 	res.send("OK");
