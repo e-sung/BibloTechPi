@@ -44,15 +44,16 @@ app.post('/signup',(req,res)=>{
 		})
 		.catch(function report(error){
 			var causeOfError = error.sqlMessage.split("key")[1].trim()
+			console.log(signup.errorMessage)
 			switch(causeOfError){
 				case "'username'":
-					validity.userNameValidity = error.sqlMessage
+					validity.userNameValidity = signup.errorMessage.ofUserNameDuplication
 					break
 				case "'email'":
-					validity.emailValidity = error.sqlMessage
+					validity.emailValidity = signup.errorMessage.ofEmailDuplication
 					break
 				case "'phonenumber'":
-					validity.phoneNumberValidity = error.sqlMessage
+					validity.phoneNumberValidity = signup.errorMessage.phoneNumberDuplication
 			}
 			console.log(validity)
 			res.json(validity)
