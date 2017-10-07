@@ -36,20 +36,23 @@ module.exports={
 		}
 		return purity;
 	},
-	insertDB : function(userInputs,userPassword){
-		var salt = crypto.randomBytes(16).toString('hex');
-		var hash = crypto.createHmac('md5',salt).update(userPassword).digest('hex');
-		var sql = mysql.format("INSERT INTO user (username, phonenumber,email,password,salt,rentableBooks,readBooks) VALUES (?,?,?,?,?,5,';')", 
-			[userInputs.userName, userInputs.phoneNumber, userInputs.email,hash, salt]);			
-		db.query(sql)
-		.then(function show(result){
-			console.log(result)
-		}, function show(error){
-			console.log(error)
+	registerUserWith : function(userInputs,userPassword){
+		return new Promise(function(resolve,reject){
+			var salt = crypto.randomBytes(16).toString('hex');
+			var hash = crypto.createHmac('md5',salt).update(userPassword).digest('hex');
+			var sql = mysql.format("INSERT INTO user (username, phonenumber,email,password,salt,rentableBooks,readBooks) VALUES (?,?,?,?,?,5,';')", 
+				[userInputs.userName, userInputs.phoneNumber, userInputs.email,hash, salt]);			
+			console.log(sql)
+			db.query(sql)
+			.then(function show(result){
+				console.log(result)
+				resolve()
+			}, function show(error){
+				reject(error)
+			})
 		})
 	},
 };
-
 
 function checkUserName(userName) {
 	var re = new RegExp("[a-zA-Z0-9_-]{3,20}");

@@ -36,24 +36,32 @@ app.post('/signup',(req,res)=>{
 	var userPassword = userInputs.password;
 	delete userInputs.password; //After validating, get rid of password information from userInputs object. This object can be sent to client;
 
-	var sql = mysql.format("select * from user where email =?", userInputs.email);
-	db.query(sql)
-	.then(function checkSameUserExists(result){
-		if(result.length>0){
-			validity.emailValidity = "User with Same email Address Exists!";			
+	if(signup.checkPurityOf(validity)){
+		signup.registerUserWith(userInputs,userPassword)
+		.then(function reportSuccess(){
+			console.log("new user was registered!")
+			res.json(validity)
+		})
+		.catch(function report(error){
+			var causeOfError = error.sqlMessage.split("key")[1].trim()
+			switch(causeOfError){
+				case "'username'":
+					validity.userNameValidity = error.sqlMessage
+					break
+				case "'email'":
+					validity.emailValidity = error.sqlMessage
+					break
+				case "'phonenumber'":
+					validity.phoneNumberValidity = error.sqlMessage
+			}
 			console.log(validity)
 			res.json(validity)
-		}else if(signup.checkPurityOf(validity)){
-			signup.insertDB(userInputs,userPassword)
-			console.log("New user registered!")
-			res.send(validity)
-		}else{
-			console.log(validity)
-			res.json(validity)
-		}
-	})
+		})
+	}else{
+		console.log(validity)
+		res.json(validity)
+	}
 });
-
 
 app.post('/login',(req,res)=>{
 	var clientEmail = req.body.userEmail;
@@ -65,14 +73,8 @@ app.post('/login',(req,res)=>{
 		var user = queryResult[0]
 		var hashedPasswordOfClient = crypto.createHmac('md5',user.salt).update(clientPassword).digest('hex');
 		if(user.password === hashedPasswordOfClient){
-			var objectToSend = {
-				username : user.username,
-				email : user.email,
-				rentscore : user.rentscore,
-				rentableBooks : user.rentableBooks,
-				authToken : clientEmail + "|" + hashedPasswordOfClient
-			};
-			res.json(objectToSend);
+			user.authToken = clientEmail + "|" + hashedPasswordOfClient
+			res.json(user);
 		}else{
 			res.status(400).send("Invalid Password");
 		}
@@ -80,8 +82,6 @@ app.post('/login',(req,res)=>{
 		res.status(400).send("Invalid Email");
 	})
 });
-
-
 
 app.get('/user-info',(req,res)=>{
 	var email = req.query.email;
