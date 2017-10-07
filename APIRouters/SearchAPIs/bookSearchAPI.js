@@ -25,5 +25,17 @@ router.get('/published-by/:publisher',(req,res)=>{
 	db.sendQueryResultWith(sql,res);
 });
 
+router.get('/rented-by/:user',(req,res)=>{
+	var user = req.params.user;
+	var sql = mysql.format("select * from books where renter_email = ?",user);
+	db.sendQueryResultWith(sql,res);
+});
+
+router.get('/read-by/:user',(req,res)=>{
+	var user  = req.params.user;
+	var sql = mysql.format("select readBooks from user where email = ?",user);
+	db.sendQueryResultWith(sql,res,true);
+});
+
 module.exports = router
 
