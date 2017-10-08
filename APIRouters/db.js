@@ -1,15 +1,15 @@
-var mysql = require('mysql');
-require('dotenv').load();
+var mysql = require('mysql')
+require('dotenv').load()
 var connection = mysql.createConnection({
     host     : '127.0.0.1',
     user     : 'root',
     password : process.env.DB_PASS,
     database : 'library'
-});
+})
 
 connection.connect(function(err) {
-    if (err) throw err;
-});
+    if (err) throw err
+})
 
 module.exports = {
 	connection : connection,
@@ -21,7 +21,7 @@ module.exports = {
 				}else{
 					resolve(rows)
 				}
-			});
+			})
 		})
 	},
 	sendQueryResultStatusWith : function(sql,res){
@@ -37,13 +37,13 @@ module.exports = {
 		this.query(sql).
 		then(function(queryResult){
 			if(shouldReturnSingleItem){
-				res.json(queryResult[0]);
+				res.json(queryResult[0])
 			}else{
-				res.json(queryResult);
+				res.json(queryResult)
 			}
 		},function(err){
 			console.log(err)
-			res.send("DB query Error");
+			res.send("DB query Error")
 		})
 	}
 }

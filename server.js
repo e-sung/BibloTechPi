@@ -1,15 +1,16 @@
 //begin Express.js
-var express = require('express');
-var app = express();
-const ApiPort = 3030;
+var express = require('express')
+var app = express()
+const ApiPort = 3030
 
 //load external modules
-var nodeadmin = require('nodeadmin'); // GUI interface for mysql : http://localhost/3030/nodeadmin
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());           // to support JSON-encoded bodies
+var nodeadmin = require('nodeadmin') // GUI interface for mysql : http://localhost/3030/nodeadmin
+var bodyParser = require('body-parser')
+app.use(nodeadmin(app))
+app.use(bodyParser.json())           // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({       // to support URL-encoded bodies
   extended: true
-}));
+}))
 
 //API routers
 var bookSearchAPI = require('./APIRouters/SearchAPIs/bookSearchAPI.js')
@@ -24,9 +25,9 @@ app.use('/entry/of-book-review',bookReviewAPI)
 app.use('/rental',rentalAPI)
 app.use('/user',sessionAPI)
 app.use(function(req, res, next) {
-  res.status(404).send('<h1>404 page not found!</h1>');
-});
+  res.status(404).send('<h1>404 page not found!</h1>')
+})
 
 app.listen(ApiPort,()=>{
-	console.log("Api Server started at port" + ApiPort); 
-});
+	console.log("Api Server started at port" + ApiPort) 
+})
