@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var mysql = require('mysql');
-var db = require('../../src/db.js');
+var db = require('../db.js');
 var sessionHelper = require('../SessionAPIs/sessionHelper.js')
 
 router.get('/info-of/book/:id',(req,res)=>{

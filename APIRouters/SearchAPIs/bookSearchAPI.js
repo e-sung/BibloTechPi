@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var mysql = require('mysql');
-var db = require('../../src/db.js');
+var db = require('../db.js');
 
 router.get('/titled/:title',(req,res)=>{
 	var bookTitle  = req.params.title;

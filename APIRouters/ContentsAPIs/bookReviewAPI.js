@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var mysql = require('mysql');
 var escape = require('escape-html');
-var db = require('../../src/db.js');
+var db = require('../db.js');
 var sessionHelper = require('../SessionAPIs/sessionHelper.js')
 
 router.get('/:id',(req,res)=>{
