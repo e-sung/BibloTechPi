@@ -1,5 +1,5 @@
 var escape = require('escape-html');
-var db = require('./db.js');
+var db = require('../db.js');
 var mysql = require('mysql');
 var crypto = require("crypto");
 

@@ -1,6 +1,6 @@
 //TODO Add changeUserInfoActivity for client App
 var escape = require('escape-html');
-var connection = require('./db.js');
+var connection = require('../db.js');
 var mysql = require('mysql');
 var crypto = require("crypto");
 

@@ -3,7 +3,7 @@ var router = express.Router()
 var crypto = require("crypto");
 var mysql = require('mysql');
 var escape = require('escape-html');
-var signup = require('/signup.js');
+var signup = require('./signup.js');
 var db = require('../db.js');
 
 router.get('/info-with/:email',(req,res)=>{

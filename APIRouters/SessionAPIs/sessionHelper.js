@@ -1,4 +1,6 @@
- module.exports.checkAuthenticityOf = function (req){ 
+var db = require('../db.js');
+
+module.exports.checkAuthenticityOf = function (req){ 
 	return new Promise(function(resolve, reject){
 		var authToken = req.get("Authorization");
 		var userEmail = authToken.split("|")[0];                     
@@ -17,4 +19,3 @@
 		})
 	});
 }
-

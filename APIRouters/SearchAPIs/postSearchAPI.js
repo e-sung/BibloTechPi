@@ -5,7 +5,6 @@ var db = require('../db.js');
 
 router.get('/about/:book',(req,res)=>{
 	var bookTitle = req.params.book;
-	console.log(bookTitle)
 	var sql = mysql.format("select id, bookTitle, postTitle, writtenTime, writer from posts where bookTitle = ?",bookTitle);
 	db.sendQueryResultWith(sql,res);
 });
@@ -17,4 +16,3 @@ router.get('/written-by/:writer',(req,res)=>{
 });
 
 module.exports = router
-

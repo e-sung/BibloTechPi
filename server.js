@@ -1,26 +1,22 @@
 //begin Express.js
 var express = require('express');
 var app = express();
-require('dotenv').load();
 const ApiPort = 3030;
 
-//load modules
-var nodeadmin = require('nodeadmin');
+//load external modules
+var nodeadmin = require('nodeadmin'); // GUI interface for mysql : http://localhost/3030/nodeadmin
 var bodyParser = require('body-parser');
+app.use(bodyParser.json());           // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({       // to support URL-encoded bodies
+  extended: true
+}));
+
 //API routers
 var bookSearchAPI = require('./APIRouters/SearchAPIs/bookSearchAPI.js')
 var postSearchAPI = require('./APIRouters/SearchAPIs/postSearchAPI.js')
 var rentalAPI = require('./APIRouters/RentalAPIs/rentalAPI.js')
 var sessionAPI = require('./APIRouters/SessionAPIs/sessionAPI.js') 
 var bookReviewAPI = require('./APIRouters/ContentsAPIs/bookReviewAPI.js')
-
-//app settings
-app.use(nodeadmin(app));
-app.use(bodyParser.json());       // to use 'req.body.queryname syntax // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
-
 //use routers
 app.use('/books',bookSearchAPI)
 app.use('/post-list',postSearchAPI)

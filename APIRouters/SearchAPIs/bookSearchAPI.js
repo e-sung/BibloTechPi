@@ -5,7 +5,6 @@ var db = require('../db.js');
 
 router.get('/titled/:title',(req,res)=>{
 	var bookTitle  = req.params.title;
-	console.log(bookTitle)
 	var sql = "select * from books where title" +  " like " + "'%" + bookTitle + "%'";
 	sql = mysql.format(sql);
 	db.sendQueryResultWith(sql,res);
@@ -38,4 +37,3 @@ router.get('/read-by/:user',(req,res)=>{
 });
 
 module.exports = router
-
