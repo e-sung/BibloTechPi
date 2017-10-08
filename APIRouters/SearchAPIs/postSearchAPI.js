@@ -13,6 +13,6 @@ router.get('/written-by/:writer',(req,res)=>{
 	var writer = req.params.writer
 	var sql = mysql.format("select id, bookTitle, postTitle, writtenTime, writer from posts where writer  = ?",writer)
 	db.sendQueryResultWith(sql,res)
-}
+})
 
 module.exports = router
