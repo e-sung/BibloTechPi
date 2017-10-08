@@ -12,14 +12,18 @@ router.get('/:id',(req,res)=>{
 })
 
 router.post("/",(req,res)=>{
-	var bookTitle = escape(req.body.bookTitle)
-	var postTitle = escape(req.body.postTitle)
-	var postContent = escape(req.body.postContent)
-	var userName = escape(req.body.userName)
-	var sql = "INSERT INTO posts (bookTitle,postTitle, postContent, writtenTime, writer) VALUES (?,?,?,NOW(),?) "
-	var inserts = [bookTitle, postTitle, postContent, userName]	
-	sql = mysql.format(sql,inserts)
-	db.sendQueryResultStatusWith(sql,res)
+	if(sessionHelper.checkAuthenticityOf(req)){
+		var bookTitle = escape(req.body.bookTitle)
+		var postTitle = escape(req.body.postTitle)
+		var postContent = escape(req.body.postContent)
+		var userName = escape(req.body.userName)
+		var sql = "INSERT INTO posts (bookTitle,postTitle, postContent, writtenTime, writer) VALUES (?,?,?,NOW(),?) "
+		var inserts = [bookTitle, postTitle, postContent, userName]	
+		sql = mysql.format(sql,inserts)
+		db.sendQueryResultStatusWith(sql,res)
+	}else{
+		res.send("authentification failed")
+	}
 })
 
 router.patch("/",(req,res)=>{
