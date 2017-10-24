@@ -52,16 +52,23 @@ router.post('/sign-in',(req,res)=>{
 	var sql = mysql.format("select * from user where email = ?", clientEmail);
 	db.query(sql)
 	.then(function doLoginProcessWith(queryResult){
-		var user = queryResult[0]
-		var hashedPasswordOfClient = crypto.createHmac('md5',user.salt).update(clientPassword).digest('hex');
-		if(user.password === hashedPasswordOfClient){
-			user.authToken = clientEmail + "|" + hashedPasswordOfClient
-			res.json(user);
+		if(queryResult.length>0){
+			var user = queryResult[0]
+			var hashedPasswordOfClient = crypto.createHmac('md5',user.salt).update(clientPassword).digest('hex');
+			if(user.password === hashedPasswordOfClient){
+				user.authToken = clientEmail + "|" + hashedPasswordOfClient
+				res.json(user);
+			}else{
+				console.log("Invalid Password");
+				res.status(400).send("Invalid Password");
+			}
 		}else{
-			res.status(400).send("Invalid Password");
+			console.log("Invalid Email");
+			res.status(400).send("Invalid Email");
 		}
 	},function(error){
-		res.status(400).send("Invalid Email");
+		console.log(error);
+		res.status(400).send("Invalid Input");
 	})
 });
 
